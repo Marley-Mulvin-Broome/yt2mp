@@ -6,6 +6,24 @@
     <title>Wow</title>
 </head>
 <body>
-    Hello there.
+    <script type="module">
+        const scriptFiles = [
+            "js/components/Component.js",
+            "js/components/URLInput.js",
+            "js/App.js",
+            "js/index.js"
+        ];
+
+        const loadScripts = () => {
+            scriptFiles.forEach((file) => {
+                const script = document.createElement("script");
+                script.src = file;
+                script.type = "module";
+                document.body.appendChild(script); 
+            });
+        }
+
+        window.onload = loadScripts;
+    </script>
 </body>
 </html>
