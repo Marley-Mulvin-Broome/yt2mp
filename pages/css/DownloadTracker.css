@@ -1,0 +1,9 @@
+.download-tracker {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    padding: 20px;
+    padding-top: 10px;
+    width: 100%;
+}

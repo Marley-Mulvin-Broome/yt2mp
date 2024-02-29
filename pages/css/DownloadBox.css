@@ -1,0 +1,26 @@
+.download-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    padding-top: 10px;
+}
+
+.download-box__title {
+    font-size: 1.5rem;
+    margin: 20px 0;
+
+}
+
+.download-box__controls-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.download-box__url-input-container {
+    width: 70%;
+}

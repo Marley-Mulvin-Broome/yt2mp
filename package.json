@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
+    "glob": "^10.3.10",
+    "validator": "^13.11.0",
     "ytdl-core": "^4.11.5"
   }
 }

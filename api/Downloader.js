@@ -10,6 +10,10 @@ class Downloader {
     getInfo(url) {
         return this.downloader.getInfo(url);
     }
+
+    validateUrl(url) {
+        return this.downloader.validateUrl(url);
+    }
 }
 
 module.exports = Downloader;

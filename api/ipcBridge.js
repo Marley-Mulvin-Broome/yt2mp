@@ -1,7 +1,8 @@
 const YouTubeDL = require("./YouTubeDL");
 const Downloader = require("./Downloader");
 const fileSystem = require("./FileSystem");
-
+const validator = require('validator');
+const path = require('path');
 
 const getDownloader = () => new Downloader(new YouTubeDL());
 
@@ -13,6 +14,14 @@ const download = (webContents, url, outputPath, options = {}) => {
     return downloader.download(url, (progress, url) => {
         webContents.send("download-progress", { progress, url });
     }, stream, options);
+}
+
+const urlIsValid = (url) => {
+    if (!validator.isURL(url)) {
+        return false;
+    }
+
+    return getDownloader().validateUrl(url);
 }
 
 const getInfo = (url) => {
@@ -29,6 +38,10 @@ const setupIpcBridge = (ipcMain, webContents) => {
         return await getInfo(url);
     });
 
+    ipcMain.handle("validate-url", async (event, url) => {
+        return urlIsValid(url);
+    });
+
     ipcMain.handle("fs-path-exists", async (event, path) => {
         return await fileSystem.checkPathExists(path);
     });
@@ -39,6 +52,10 @@ const setupIpcBridge = (ipcMain, webContents) => {
 
     ipcMain.handle("fs-save-file-dialog", async (event) => {
         return await fileSystem.saveFileDialog();
+    });
+
+    ipcMain.handle("fs-glob-css", async() => {
+        return await fileSystem.globDirectory(path.join(__dirname, '../pages/css/*.css'));
     });
 }
 

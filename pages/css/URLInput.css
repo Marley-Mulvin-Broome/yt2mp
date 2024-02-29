@@ -1,0 +1,17 @@
+.url-input {
+    border-bottom: 1px solid hsl(0, 0%, 40%);
+    padding: 10px 0;
+    transition: border-bottom 0.3s;
+    width: 100%;
+}
+
+.url-input:focus {
+    border-bottom: 1px solid var(--accent-color);
+    transition: border-bottom 0.3s;
+    box-shadow: 0 4px 6px -6px var(--accent-color);
+}
+
+.url-input__invalid {
+    border: 1px solid red;
+    color: red;
+}

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
 const setupIpcBridge = require('./api/ipcBridge');
 
@@ -13,6 +13,10 @@ const createWindow = () => {
 
     setupIpcBridge(ipcMain, win.webContents);
   
+    win.webContents.setWindowOpenHandler(({ url }) => {
+      shell.openExternal(url);
+      return { action: 'deny' };
+    });
     win.loadFile('pages/index.html');
 };
 

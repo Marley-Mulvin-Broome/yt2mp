@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { dialog } = require("electron/main");
+const { glob } = require("glob");
 
 const checkPathExists = (path) => {
     return new Promise((resolve, reject) => {
@@ -48,10 +49,15 @@ const saveFileDialog = async () => {
     return result.filePath;
 }
 
+const globDirectory = async (path) => {
+    return await glob(path);
+}
+
 module.exports = {
     checkPathExists,
     canCreateFile,
     openWriteStream,
     closeWriteStream,
-    saveFileDialog
+    saveFileDialog,
+    globDirectory
 };

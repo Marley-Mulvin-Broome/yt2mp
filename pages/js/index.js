@@ -3,11 +3,12 @@ import { loadCss } from "./CssLoader.js";
 
 let app;
 
-window.onload = () => {
-    loadCss([
-        "css/reset.css",
-        "css/index.css"
-    ]);
+window.onload = async () => {
+    const cssFiles = await window.fs.getCssFiles();
+
+    console.log(`Found ${cssFiles.length} css files -> ${cssFiles}`);
+
+    loadCss(cssFiles);
 
     app = new App();
 

@@ -1,0 +1,15 @@
+.download-tracker-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    padding-top: 10px;
+    gap: 10px;
+}
+
+.download-tracker-box__title {
+    font-size: 1.5rem;
+    margin: 20px 0;
+    text-align: center;
+}

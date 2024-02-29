@@ -31,12 +31,17 @@ class YouTubeDL extends Downloader {
             ytdl.getInfo(url).then((info) => {
                 resolve({
                     title: info.videoDetails.title,
-                    duration: info.videoDetails.lengthSeconds
+                    duration: info.videoDetails.lengthSeconds,
+                    thumbnailUrl: info.videoDetails.thumbnails[0].url
                 });
             }).catch((error) => {
                 reject(error);
             });
         });
+    }
+
+    validateUrl(url) {
+        return ytdl.validateURL(url);
     }
 }
 

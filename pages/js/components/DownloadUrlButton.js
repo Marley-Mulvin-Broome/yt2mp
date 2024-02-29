@@ -1,13 +1,14 @@
+import { button } from "../rainbowjs/HtmlTags.js";
 import { Component } from "./Component.js";
+
+const BASE_CSS_CLASS_NAME = 'download-url-button';
 
 export class DownloadUrlButton extends Component {
     onClick;
 
     constructor(parent) {
         super(parent);
-        this.button = document.createElement('button');
-        this.button.textContent = 'Download';
-        this.button.disabled = false;
+        this.button = button(`${BASE_CSS_CLASS_NAME}`, "Download");
 
         this.button.addEventListener('click', async () => {
             if (this.onClick) {

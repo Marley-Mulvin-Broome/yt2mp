@@ -11,6 +11,9 @@ contextBridge.exposeInMainWorld('downloader', {
     },
     getInfo: async (url) => {
         return await ipcRenderer.invoke('get-info', url);
+    },
+    validateUrl: async (url) => {
+        return await ipcRenderer.invoke('validate-url', url);
     }
 });
 
@@ -23,5 +26,8 @@ contextBridge.exposeInMainWorld('fs', {
     },
     saveFileDialog: async () => {
         return await ipcRenderer.invoke('fs-save-file-dialog');
+    },
+    getCssFiles: async () => {
+        return await ipcRenderer.invoke('fs-glob-css');
     }
 });

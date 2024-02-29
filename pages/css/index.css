@@ -1,3 +1,65 @@
+:root {
+    --dark-style-bg: #292c34;
+    --dark-style-block-bg: hsl(222, 12%, 25%);
+    --dark-style-highlight: #495062;
+    --dark-style-highlight-hover: #3f4450;
+    --selection-box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    --accent-color: #ffb2ff;
+    --block-box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.35);
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url('../fonts/Roboto-Medium.ttf');
+}
+
 body {
-    background: #000;
+    background-color: var(--dark-style-bg);
+    font-family: "Roboto", sans-serif;
+    color: white;
+}
+
+.container {
+    border-radius: 10px;
+    background-color: var(--dark-style-highlight-hover);
+    
+    transition: background-color 0.3s;
+    box-shadow: var(--block-box-shadow);
+    width: 80%;
+}
+
+.container:has(:focus) {
+    background-color: var(--dark-style-highlight);
+    box-shadow: var(--selection-box-shadow);
+    transition: all 0.3s;
+}
+
+.container__dark {
+    background-color: var(--dark-style-block-bg);
+    border-radius: 10px;
+    padding: 20px;
+    width: 80%;
+    transition: all 0.3s;
+}
+
+.container__dark:has(:focus) {
+    background-color: var(--dark-style-highlight);
+    box-shadow: var(--selection-box-shadow);
+    transition: all 0.3s;
+}
+
+.container__dark.container__hover-focus:hover {
+    background-color: var(--dark-style-highlight);
+    box-shadow: var(--selection-box-shadow);
+    transition: all 0.3s;
+}
+
+:focus {
+    outline: none;
+}
+
+::selection {
+    background-color: var(--accent-color);
+    color: white;
+    box-shadow: var(--selection-box-shadow);
 }
