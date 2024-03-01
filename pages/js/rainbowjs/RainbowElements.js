@@ -45,3 +45,8 @@ export const createHtmlElementsFromHtml = (html) => {
 
     return children;
 }
+
+export const createHtmlElementFromHtml = (html) => {
+    const elements = createHtmlElementsFromHtml(html);
+    return elements[0];
+}

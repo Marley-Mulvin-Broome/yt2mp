@@ -19,25 +19,18 @@ export class App extends Component {
 
         this.downloadBox = new DownloadBox(this.parent);
         this.downloadsTrackerBox = new DownloadTrackerBox(this.parent);
-        
-        this.downloadsTrackerBox.addDownloadTracker({
-            title: "Long nice beautiful title",
-            thumbnail: "https://www.wfla.com/wp-content/uploads/sites/71/2023/05/GettyImages-1389862392.jpg?w=2560&h=1440&crop=1",
-            url: "https://www.youtube.com/watch?v=r0aiYNir5Uc",
-        });
 
-        this.downloadsTrackerBox.addDownloadTracker({
-            title: "Long nice beautiful title",
-            thumbnail: "https://www.wfla.com/wp-content/uploads/sites/71/2023/05/GettyImages-1389862392.jpg?w=2560&h=1440&crop=1",
-            url: "https://www.youtube.com/watch?v=r0aiYNir5Uc",
-        });
-
-        this.downloadsTrackerBox.addDownloadTracker({
-            title: "Long nice beautiful title",
-            thumbnail: "https://www.wfla.com/wp-content/uploads/sites/71/2023/05/GettyImages-1389862392.jpg?w=2560&h=1440&crop=1",
-            url: "https://www.youtube.com/watch?v=r0aiYNir5Uc",
-        });
+        this.downloadBox.onDownloadStart = this.#onDownloadStart.bind(this);
 
         document.body.appendChild(this.parent);
+    }
+
+    async #onDownloadStart({ info, filePath, url }) {
+        this.downloadsTrackerBox.addDownloadTracker({
+            title: info.title,
+            thumbnail: info.thumbnail,
+            url,
+            filePath
+        });
     }
 }

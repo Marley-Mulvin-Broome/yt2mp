@@ -1,4 +1,4 @@
-import { openFolderIcon } from "../icons/icons.js";
+import { openFolderIcon, tickIcon, trashIcon } from "../icons/icons.js";
 import { button, div, h3, img, p, progress } from "../rainbowjs/HtmlTags.js";
 import { Component } from "./Component.js";
 
@@ -22,9 +22,22 @@ export class DownloadTracker extends Component {
 
         this.openContainingFolderButton = button(`${BASE_CSS_CLASS_NAME}__open-containing-folder-button`, '');
 
+        this.removeDownloadButton = button(`${BASE_CSS_CLASS_NAME}__remove-download-button`, '');
+
         this.openContainingFolderButton.mount(
-            openFolderIcon("25px", "25px")
+            openFolderIcon("25px", "25px", "var(--icon-colour)")
         );
+
+        this.removeDownloadButton.mount(
+            trashIcon("25px", "25px", "var(--icon-colour)")
+        );
+
+        this.removeDownloadButton.onclick = () => {
+            // window.downloader.removeDownload(info.url);
+            this.container.remove();
+        }
+
+        this.iconContainer = div(`${BASE_CSS_CLASS_NAME}__icon-container`, [this.openContainingFolderButton, this.removeDownloadButton]);
 
         this.url = info.url;
 
@@ -32,10 +45,19 @@ export class DownloadTracker extends Component {
             if (url !== this.url) { return; }
             
             this.progress.value = progress;
+
+            if (this.progress.value === 1) {
+                this.complete();
+            }
         });
 
-        this.container = div(`${BASE_CSS_CLASS_NAME} container__dark container__hover-focus`, [this.downloadInfoContainer, this.progressContainer, this.openContainingFolderButton]);
+        this.container = div(`${BASE_CSS_CLASS_NAME} container__dark container__hover-focus`, [this.downloadInfoContainer, this.progressContainer, this.iconContainer]);
 
         this.mount([this.container]);
-    } 
+    }
+
+    complete() {
+        this.progress.replaceWith(tickIcon("50px", "50px", "var(--accent-color)"));
+        this.progressText.innerText = 'Download complete';
+    }
 }
