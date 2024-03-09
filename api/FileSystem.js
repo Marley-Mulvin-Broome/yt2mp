@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { shell } = require("electron");
 const { dialog } = require("electron/main");
 const { glob } = require("glob");
 
@@ -53,11 +54,16 @@ const globDirectory = async (path) => {
     return await glob(path);
 }
 
+const showItemInFolder = (path) => {
+    return shell.showItemInFolder(path);
+}
+
 module.exports = {
     checkPathExists,
     canCreateFile,
     openWriteStream,
     closeWriteStream,
     saveFileDialog,
-    globDirectory
+    globDirectory,
+    showItemInFolder
 };

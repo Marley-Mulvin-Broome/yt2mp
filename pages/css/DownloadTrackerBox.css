@@ -6,6 +6,7 @@
     padding: 20px;
     padding-top: 10px;
     gap: 10px;
+    transition: height 0.3s;
 }
 
 .download-tracker-box__title {

@@ -25,6 +25,14 @@ export class Component {
     }
 
     destroy() {
-        throw new Error('Not implemented');
+        throw new Error('Component.destroy(): Not implemented');
+    }
+
+    replace(target) {
+        throw new Error('Component.replace(): Not implemented');
+    }
+
+    appendBefore(target) {
+        throw new Error('Component.appendBefore(): Not implemented');
     }
 }

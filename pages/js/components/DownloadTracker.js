@@ -7,6 +7,8 @@ const BASE_CSS_CLASS_NAME = 'download-tracker';
 export class DownloadTracker extends Component {
     constructor(parent, info) {
         super(parent);
+
+        this.filePath = info.filePath;
         
         this.downloadTitle = h3(`${BASE_CSS_CLASS_NAME}__title`, info.title);
         this.downloadImage = img(`${BASE_CSS_CLASS_NAME}__thumbnail`, info.thumbnail, 'Thumbnail', '128', '72px');
@@ -27,6 +29,8 @@ export class DownloadTracker extends Component {
         this.openContainingFolderButton.mount(
             openFolderIcon("25px", "25px", "var(--icon-colour)")
         );
+
+        this.openContainingFolderButton.onclick = this.#openContainerFolderClicked.bind(this);
 
         this.removeDownloadButton.mount(
             trashIcon("25px", "25px", "var(--icon-colour)")
@@ -59,5 +63,9 @@ export class DownloadTracker extends Component {
     complete() {
         this.progress.replaceWith(tickIcon("50px", "50px", "var(--accent-color)"));
         this.progressText.innerText = 'Download complete';
+    }
+
+    async #openContainerFolderClicked() {
+        await window.fs.showItemInFolder(this.filePath);
     }
 }

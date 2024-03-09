@@ -57,6 +57,10 @@ const setupIpcBridge = (ipcMain, webContents) => {
     ipcMain.handle("fs-glob-css", async() => {
         return await fileSystem.globDirectory(path.join(__dirname, '../pages/css/*.css'));
     });
+
+    ipcMain.handle("fs-show-item-in-folder", async (event, path) => {
+        return fileSystem.showItemInFolder(path);
+    });
 }
 
 module.exports = setupIpcBridge;

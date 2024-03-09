@@ -1,5 +1,6 @@
 import { div, h2 } from "../rainbowjs/HtmlTags.js";
 import { Component } from "./Component.js";
+import { DownloadOptionsModal } from "./DownloadOptionsModal.js";
 import { DownloadUrlButton } from "./DownloadUrlButton.js";
 import { URLInput } from "./URLInput.js";
 
@@ -37,14 +38,14 @@ export class DownloadBox extends Component {
     async #onDownloadButtonClicked() {
         if (!this.onDownloadStart) { console.warn("Download box has no callback for when a download is started!"); return; }
             
-            const urlValid = await window.downloader.validateUrl(this.URLInput.input.value);
+        const urlValid = await window.downloader.validateUrl(this.URLInput.input.value);
 
-            if (!urlValid) {
-                this.URLInput.invalidate();
-                return;
-            }
+        if (!urlValid) {
+            this.URLInput.invalidate();
+            return;
+        }
 
-            await this.#addNewDownload();
+        await this.#addNewDownload();
     }
 
     async #addNewDownload() {
@@ -52,15 +53,9 @@ export class DownloadBox extends Component {
 
         if (!url) { return; }
 
-        const filePath = await window.fs.saveFileDialog();
+        const downloadModel = new DownloadOptionsModal(document.body, url);
+        downloadModel.onAccept = this.onDownloadStart;
 
-        if (!filePath) { return; }
-
-        const info = await window.downloader.getInfo(url);
-        const downloadPromise = window.downloader.download(url, filePath);
-
-        if (this.onDownloadStart) {
-            this.onDownloadStart({ info, downloadPromise, filePath, url });
-        }
+        
     }
 }

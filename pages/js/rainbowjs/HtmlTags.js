@@ -6,38 +6,92 @@ export const inputType = {
     password: 'password',
 };
 
+/**
+ * 
+ * @param {string} classNames 
+ * @param {HTMLElement[]} children 
+ * @returns {HTMLElement}
+ */
 export const div = (classNames, children=[]) => {
     return createHtmlElement('div', { class: classNames }, children);
 }
 
+/**
+ * 
+ * @param {string} classNames 
+ * @param {string} text 
+ * @returns {HTMLElement}
+ */
 export const h1 = (classNames, text) => {
     return createHtmlElement('h1', { class: classNames }, [document.createTextNode(text)]);
 }
 
+/**
+ * 
+ * @param {string} classNames 
+ * @param {string} text 
+ * @returns {HTMLElement}
+ */
 export const h2 = (classNames, text) => {
     return createHtmlElement('h2', { class: classNames }, [document.createTextNode(text)]);
 }
 
+/**
+ * 
+ * @param {string} classNames 
+ * @param {string} text 
+ * @returns {HTMLElement}
+ */
 export const h3 = (classNames, text) => {
     return createHtmlElement('h3', { class: classNames }, [document.createTextNode(text)]);
 }
 
+/**
+ * 
+ * @param {string} classNames 
+ * @param {string} text 
+ * @returns {HTMLElement}
+ */
 export const h4 = (classNames, text) => {
     return createHtmlElement('h4', { class: classNames }, [document.createTextNode(text)]);
 }
 
+/**
+ * 
+ * @param {string} classNames 
+ * @param {string} text 
+ * @returns {HTMLElement}
+ */
 export const h5 = (classNames, text) => {
     return createHtmlElement('h5', { class: classNames }, [document.createTextNode(text)]);
 }
 
+/**
+ * 
+ * @param {string} classNames 
+ * @param {string} text 
+ * @returns {HTMLElement}
+ */
 export const h6 = (classNames, text) => {
     return createHtmlElement('h6', { class: classNames }, [document.createTextNode(text)]);
 }
 
+/**
+ * 
+ * @param {string} classNames 
+ * @param {string} text 
+ * @returns {HTMLElement}
+ */
 export const p = (classNames, text) => {
     return createHtmlElement('p', { class: classNames }, [document.createTextNode(text)]);
 }
 
+/**
+ * 
+ * @param {string} classNames 
+ * @param {string} text 
+ * @returns {HTMLElement}
+ */
 export const span = (classNames, text) => {
     return createHtmlElement('span', { class: classNames
         }, [document.createTextNode(text)]);
@@ -77,8 +131,8 @@ export const input = (classNames, type, placeholder="none") => {
     return createHtmlElement('input', { class: classNames, type }, [document.createTextNode(placeholder)]);
 }
 
-export const button = (classNames, text) => {
-    return createHtmlElement('button', { class: classNames }, [document.createTextNode(text)]);
+export const button = (classNames, text, children = []) => {
+    return createHtmlElement('button', { class: classNames }, [document.createTextNode(text), ...children]);
 }
 
 export const progress = (classNames, value, max) => {

@@ -29,5 +29,8 @@ contextBridge.exposeInMainWorld('fs', {
     },
     getCssFiles: async () => {
         return await ipcRenderer.invoke('fs-glob-css');
+    },
+    showItemInFolder: async (path) => {
+        return await ipcRenderer.invoke('fs-show-item-in-folder', path);
     }
 });

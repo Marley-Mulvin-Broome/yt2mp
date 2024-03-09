@@ -1,18 +1,16 @@
 import { Component } from "./components/Component.js";
 import { DownloadBox } from "./components/DownloadBox.js";
-import { DownloadTracker } from "./components/DownloadTracker.js";
 import { DownloadTrackerBox } from "./components/DownloadTrackerBox.js";
+import { Loader } from "./components/Loader.js";
+import { div, h1 } from "./rainbowjs/HtmlTags.js";
 
 const BASE_CSS_CLASS_NAME = 'app';
 
 export class App extends Component {
     constructor() {
-        super(document.createElement('div'));
-        this.parent.classList.add('app');
+        super(div(BASE_CSS_CLASS_NAME));
 
-        this.title = document.createElement('h1');
-        this.title.innerText = 'YT2MP ';
-        this.title.classList.add(`${BASE_CSS_CLASS_NAME}__title`);
+        this.title = h1(`${BASE_CSS_CLASS_NAME}__title`, 'YT2MP');
 
         this.mount([this.title]);
 
