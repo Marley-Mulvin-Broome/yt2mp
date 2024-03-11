@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
 const setupIpcBridge = require('./api/ipcBridge');
+const { userPreferenceExists, setUserPreference } = require('./api/UserPreferences');
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -12,6 +13,12 @@ const createWindow = () => {
     });
 
     setupIpcBridge(ipcMain, win.webContents);
+
+    userPreferenceExists('downloadPath').then((exists) => {
+      if (!exists) {
+        setUserPreference('downloadPath', app.getPath('downloads'));
+      }
+    });
   
     win.webContents.setWindowOpenHandler(({ url }) => {
       shell.openExternal(url);

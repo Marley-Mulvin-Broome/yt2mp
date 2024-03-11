@@ -11,7 +11,7 @@ export class DownloadTracker extends Component {
         this.filePath = info.filePath;
         
         this.downloadTitle = h3(`${BASE_CSS_CLASS_NAME}__title`, info.title);
-        this.downloadImage = img(`${BASE_CSS_CLASS_NAME}__thumbnail`, info.thumbnail, 'Thumbnail', '128', '72px');
+        this.downloadImage = img(`${BASE_CSS_CLASS_NAME}__thumbnail`, info.thumbnailUrl, 'Thumbnail', '128', '72px');
         this.downloadImage.onclick = () => {
             window.open(info.url);
         };

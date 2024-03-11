@@ -21,6 +21,9 @@ contextBridge.exposeInMainWorld('fs', {
     pathExists: async (path) => {
         return await ipcRenderer.invoke('fs-path-exists', path);
     },
+    isFile: async (path) => {
+        return await ipcRenderer.invoke('fs-is-file', path);
+    },
     canCreateFile: async (path) => {
         return await ipcRenderer.invoke('fs-can-create-file', path);
     },
@@ -32,5 +35,14 @@ contextBridge.exposeInMainWorld('fs', {
     },
     showItemInFolder: async (path) => {
         return await ipcRenderer.invoke('fs-show-item-in-folder', path);
+    }
+});
+
+contextBridge.exposeInMainWorld('userPreferences', {
+    get: async (key) => {
+        return await ipcRenderer.invoke('user-preferences-get', key);
+    },
+    set: async (key, value) => {
+        return await ipcRenderer.invoke('user-preferences-set', key, value);
     }
 });
