@@ -3,8 +3,8 @@ class Downloader {
         this.downloader = downloader;
     }
 
-    download(url, progressCallback, outputStream, options = {}) {
-        return this.downloader.download(url, progressCallback, outputStream, options);
+    download(url, progressCallback, outputFile, options = {}) {
+        return this.downloader.download(url, progressCallback, outputFile, options);
     }
 
     getInfo(url) {

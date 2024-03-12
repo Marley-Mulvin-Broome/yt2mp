@@ -10,11 +10,9 @@ const getDownloader = () => new Downloader(new YouTubeDL());
 const download = (webContents, url, outputPath, options = {}) => {
     downloader = getDownloader();
 
-    stream = fileSystem.openWriteStream(outputPath);
-
-    return downloader.download(url, (progress, url) => {
-        webContents.send("download-progress", { progress, url });
-    }, stream, options);
+    return downloader.download(url, (tracker) => {
+        webContents.send("download-progress", { tracker, url });
+    }, outputPath, options);
 }
 
 const urlIsValid = (url) => {
