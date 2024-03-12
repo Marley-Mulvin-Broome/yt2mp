@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { shell } = require("electron");
+const { shell, app } = require("electron");
 const { dialog } = require("electron/main");
 const { glob } = require("glob");
 
@@ -14,6 +14,18 @@ const checkPathExists = (path) => {
         });
     });
 };
+
+const isFile = (path) => {
+    return new Promise((resolve, reject) => {
+        fs.stat(path, (error, stats) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(stats.isFile());
+            }
+        });
+    });
+}
 
 const canCreateFile = (path) => {
     return new Promise((resolve, reject) => {
@@ -58,12 +70,18 @@ const showItemInFolder = (path) => {
     return shell.showItemInFolder(path);
 }
 
+const getDownloadsFolder = () => {
+    return app.getPath("downloads");
+}
+
 module.exports = {
     checkPathExists,
+    isFile,
     canCreateFile,
     openWriteStream,
     closeWriteStream,
     saveFileDialog,
     globDirectory,
-    showItemInFolder
+    showItemInFolder,
+    getDownloadsFolder
 };

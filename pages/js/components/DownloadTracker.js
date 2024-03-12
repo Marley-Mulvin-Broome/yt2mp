@@ -5,9 +5,16 @@ import { Component } from "./Component.js";
 const BASE_CSS_CLASS_NAME = 'download-tracker';
 
 export class DownloadTracker extends Component {
+    onDownloadRemoved;
+
     constructor(parent, info) {
         super(parent);
 
+        console.log("Download tracker created with info: ", info);
+
+        info.downloadPromise.then(() => {
+            this.complete();
+        });
         this.filePath = info.filePath;
         
         this.downloadTitle = h3(`${BASE_CSS_CLASS_NAME}__title`, info.title);
@@ -19,7 +26,7 @@ export class DownloadTracker extends Component {
         this.downloadInfoContainer = div(`${BASE_CSS_CLASS_NAME}__info-container`, [this.downloadTitle, this.downloadImage]);
         
         this.progress = progress(`${BASE_CSS_CLASS_NAME}__progress`, "0", "1");
-        this.progressText = p(`${BASE_CSS_CLASS_NAME}__progress-text`, 'Downloading ...');
+        this.progressText = p(`${BASE_CSS_CLASS_NAME}__progress-text`, 'Starting download ...');
         this.progressContainer = div(`${BASE_CSS_CLASS_NAME}__progress-container`, [this.progress, this.progressText]);
 
         this.openContainingFolderButton = button(`${BASE_CSS_CLASS_NAME}__open-containing-folder-button`, '');
@@ -37,7 +44,7 @@ export class DownloadTracker extends Component {
         );
 
         this.removeDownloadButton.onclick = () => {
-            // window.downloader.removeDownload(info.url);
+            if (this.onDownloadRemoved) this.onDownloadRemoved();
             this.container.remove();
         }
 
@@ -45,14 +52,8 @@ export class DownloadTracker extends Component {
 
         this.url = info.url;
 
-        window.downloader.onDownloadProgress(({ progress, url }) => {
-            if (url !== this.url) { return; }
-            
-            this.progress.value = progress;
-
-            if (this.progress.value === 1) {
-                this.complete();
-            }
+        window.downloader.onDownloadProgress((tracker, url) => {
+            this.#onDownloadProgress(tracker, url);
         });
 
         this.container = div(`${BASE_CSS_CLASS_NAME} container__dark container__hover-focus`, [this.downloadInfoContainer, this.progressContainer, this.iconContainer]);
@@ -63,6 +64,20 @@ export class DownloadTracker extends Component {
     complete() {
         this.progress.replaceWith(tickIcon("50px", "50px", "var(--accent-color)"));
         this.progressText.innerText = 'Download complete';
+    }
+
+    #onDownloadProgress(tracker, url) {
+        if (url !== this.url) { return; }
+
+        const downloadProgress = (tracker.video.downloaded + tracker.audio.downloaded) / (tracker.video.total + tracker.audio.total).toFixed(2);
+        
+        this.progress.value = progress;
+
+        if (downloadProgress === 1) {
+            this.progressText.innerText = "Merging audio and video ...";
+        } else {
+            this.progressText.innerText = `Downloading ... ${Math.floor(downloadProgress * 100)}%`;
+        }
     }
 
     async #openContainerFolderClicked() {

@@ -19,5 +19,9 @@ export class DownloadTrackerBox extends Component {
     addDownloadTracker(info) {
         const downloadTracker = new DownloadTracker(this.downloadsTrackerContainer, info);
         this.downloadTrackers.push(downloadTracker);
+
+        downloadTracker.onDownloadRemoved = () => {
+            this.downloadTrackers = this.downloadTrackers.filter((tracker) => tracker !== downloadTracker);
+        }
     }
 }

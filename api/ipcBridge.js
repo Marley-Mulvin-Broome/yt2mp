@@ -1,6 +1,7 @@
 const YouTubeDL = require("./YouTubeDL");
 const Downloader = require("./Downloader");
 const fileSystem = require("./FileSystem");
+const userPreferences = require("./UserPreferences");
 const validator = require('validator');
 const path = require('path');
 
@@ -9,11 +10,9 @@ const getDownloader = () => new Downloader(new YouTubeDL());
 const download = (webContents, url, outputPath, options = {}) => {
     downloader = getDownloader();
 
-    stream = fileSystem.openWriteStream(outputPath);
-
-    return downloader.download(url, (progress, url) => {
-        webContents.send("download-progress", { progress, url });
-    }, stream, options);
+    return downloader.download(url, (tracker) => {
+        webContents.send("download-progress", { tracker, url });
+    }, outputPath, options);
 }
 
 const urlIsValid = (url) => {
@@ -30,6 +29,8 @@ const getInfo = (url) => {
 }
 
 const setupIpcBridge = (ipcMain, webContents) => {
+    userPreferences.setupStorage();
+
     ipcMain.handle("download", async (event, url, outputPath, options) => {
         await download(webContents, url, outputPath, options);
     });
@@ -46,6 +47,10 @@ const setupIpcBridge = (ipcMain, webContents) => {
         return await fileSystem.checkPathExists(path);
     });
 
+    ipcMain.handle("fs-is-file", async (event, path) => {
+        return await fileSystem.isFile(path);
+    });
+
     ipcMain.handle("fs-can-create-file", async (event, path) => {
         return await fileSystem.canCreateFile(path);
     });
@@ -54,12 +59,20 @@ const setupIpcBridge = (ipcMain, webContents) => {
         return await fileSystem.saveFileDialog();
     });
 
-    ipcMain.handle("fs-glob-css", async() => {
+    ipcMain.handle("fs-glob-css", async () => {
         return await fileSystem.globDirectory(path.join(__dirname, '../pages/css/*.css'));
     });
 
     ipcMain.handle("fs-show-item-in-folder", async (event, path) => {
         return fileSystem.showItemInFolder(path);
+    });
+
+    ipcMain.handle("user-preferences-get", async (event, key) => {
+        return await userPreferences.getUserPreference(key);
+    });
+
+    ipcMain.handle("user-preferences-set", async (event, key, value) => {
+        return await userPreferences.setUserPreference(key, value);
     });
 }
 

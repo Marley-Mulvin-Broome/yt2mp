@@ -21,8 +21,6 @@ export class DownloadOptionsModal extends Component {
         this.modalCloseButton.onclick = this.#onCloseButtonClicked.bind(this);
         
         this.modalTitlebar = div(`${BASE_CSS_CLASS_NAME}__titlebar`, [this.modalTitle, this.modalCloseButton]);
-
-
         
         this.modalBody = div(`${BASE_CSS_CLASS_NAME}__body`, []);
         this.modalLoading = new Loader(this.modalBody);
@@ -52,6 +50,11 @@ export class DownloadOptionsModal extends Component {
         this.modalAcceptButton.onclick = this.#onAcceptButtonClicked.bind(this);
 
         this.#loadInfo();
+
+        window.userPreferences.get('downloadPath').then((downloadPath) => {
+            this.downloadPathTextInput.value = downloadPath;
+            console.log(downloadPath);
+        });
     }
 
     destroy() {
@@ -83,21 +86,55 @@ export class DownloadOptionsModal extends Component {
         this.destroy();
     }
 
-    #pathValid() {
-        return this.downloadPathTextInput.value;
+    #invalidate() {
+        alert('Invalid download path');
     }
     
-    #validateAccept() {
-        return (this.#pathValid() && this.state === 'loaded');
+    get #upperDirectory() {
+        return this.downloadPathTextInput.value.split('/').slice(0, -1).join('/');
     }
 
-    #onAcceptButtonClicked() {
-        if (!this.#validateAccept()) { return; }
+    get #pathHasExtension() {
+        const path = this.downloadPathTextInput.value;
+
+        return path.endsWith('.mp4') || path.endsWith('.mp3');
+    }
+
+    async #pathValid() {
+        const path = this.downloadPathTextInput.value;
+
+        const hasExtension = this.#pathHasExtension;
+        const parentDirectoryExists = await window.fs.pathExists(this.#upperDirectory);
+
+        console.log("Validating path for download: " + path);
+        console.log("Path has extension: " + hasExtension);
+        console.log("Parent directory exists: " + parentDirectoryExists);
+
+        return hasExtension && parentDirectoryExists;
+    }
+    
+    async #validateAccept() {
+        return (await this.#pathValid() && this.state === 'loaded');
+    }
+
+    async #onAcceptButtonClicked() {
+        const valid = await this.#validateAccept();
+
+        if (!valid) { this.#invalidate(); return; }
 
         this.state = 'accepted';
         this.destroy();
 
-        const downloadPromise = window.downloader.download(this.url, this.downloadPathTextInput.value);
+        console.log("Setting user preferences for download path: " + this.#upperDirectory);
+
+        window.userPreferences.set('downloadPath', this.#upperDirectory);
+
+
+        const downloadPromise = window.downloader.download(
+            this.url, 
+            this.downloadPathTextInput.value, 
+            { video: true, audio: true }
+        );
 
         this.onAccept(
             {

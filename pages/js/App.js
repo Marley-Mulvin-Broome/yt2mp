@@ -23,12 +23,13 @@ export class App extends Component {
         document.body.appendChild(this.parent);
     }
 
-    async #onDownloadStart({ info, filePath, url }) {
+    async #onDownloadStart({ info, filePath, url, downloadPromise }) {
         this.downloadsTrackerBox.addDownloadTracker({
             title: info.title,
-            thumbnail: info.thumbnail,
+            thumbnail: info.thumbnailUrl,
             url,
-            filePath
+            filePath,
+            downloadPromise
         });
     }
 }

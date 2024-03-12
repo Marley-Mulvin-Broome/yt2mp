@@ -127,6 +127,13 @@ export const li = (classNames, text) => {
     return createHtmlElement('li', { class: classNames }, [document.createTextNode(text)]);
 }
 
+/**
+ * 
+ * @param {string} classNames 
+ * @param {string} type 
+ * @param {string} placeholder 
+ * @returns {HTMLElement}
+ */
 export const input = (classNames, type, placeholder="none") => {
     return createHtmlElement('input', { class: classNames, type }, [document.createTextNode(placeholder)]);
 }
