@@ -95,12 +95,22 @@ export class DownloadOptionsModal extends Component {
     }
 
     get #pathHasExtension() {
-        return this.downloadPathTextInput.value.endsWith('.mp4') || this.downloadPathTextInput.value.endsWith('.mp3');
+        const path = this.downloadPathTextInput.value;
+
+        return path.endsWith('.mp4') || path.endsWith('.mp3');
     }
 
     async #pathValid() {
         const path = this.downloadPathTextInput.value;
-        return this.#pathHasExtension && await window.fs.canCreateFile(path);
+
+        const hasExtension = this.#pathHasExtension;
+        const parentDirectoryExists = await window.fs.pathExists(this.#upperDirectory);
+
+        console.log("Validating path for download: " + path);
+        console.log("Path has extension: " + hasExtension);
+        console.log("Parent directory exists: " + parentDirectoryExists);
+
+        return hasExtension && parentDirectoryExists;
     }
     
     async #validateAccept() {
@@ -115,9 +125,16 @@ export class DownloadOptionsModal extends Component {
         this.state = 'accepted';
         this.destroy();
 
+        console.log("Setting user preferences for download path: " + this.#upperDirectory);
+
         window.userPreferences.set('downloadPath', this.#upperDirectory);
 
-        const downloadPromise = window.downloader.download(this.url, this.downloadPathTextInput.value);
+
+        const downloadPromise = window.downloader.download(
+            this.url, 
+            this.downloadPathTextInput.value, 
+            { video: true, audio: true }
+        );
 
         this.onAccept(
             {
